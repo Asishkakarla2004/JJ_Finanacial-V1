@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html lang="en">
+<head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>Joja Financial Services | History</title><link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}"></head>
+<body>
+<header class="navbar"><a class="brand" href="{{ url_for('home') }}"><span class="brand-mark">J</span><span>Joja <b>Financial Services</b></span></a><nav><a href="{{ url_for('home') }}">Home</a><a class="active" href="{{ url_for('history') }}">History</a><a href="{{ url_for('contact') }}">Contact Us</a></nav></header>
+<main>
+<section class="page-hero"><span class="eyebrow">ACCOUNT OVERVIEW</span><h1>Loan history</h1><p>A sample view of recent applications and sanctioned loans.</p></section>
+<section class="section">
+<div class="history-summary"><div><span>Total records</span><strong>{{ loans|length }}</strong></div><div><span>Active loans</span><strong>{{ loans|selectattr('status','equalto','Active')|list|length }}</strong></div><div><span>Completed</span><strong>{{ loans|selectattr('status','equalto','Completed')|list|length }}</strong></div><div><span>Pending</span><strong>{{ loans|selectattr('status','equalto','Pending')|list|length }}</strong></div></div>
+<div class="history-grid">
+{% for loan in loans %}<article class="history-card"><div class="history-icon">{{ loop.index }}</div><div><small>LOAN TYPE</small><h3>{{ loan.loan_type }}</h3></div><div><small>AMOUNT SANCTIONED</small><h3>₹{{ "{:,.0f}".format(loan.amount) }}</h3></div><div><small>INTEREST</small><h3>{{ "%.2f"|format(loan.interest) }}% p.a.</h3></div><div><small>DATE</small><h3>{{ loan.date }}</h3></div><div><span class="status {{ loan.status|lower }}">{{ loan.status }}</span></div></article>{% endfor %}
+</div>
+</section></main>
+<footer><span>© 2026 Joja Financial Services</span><span>Sample testing data</span></footer>
+</body>
+</html>

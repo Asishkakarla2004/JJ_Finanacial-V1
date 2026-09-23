@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>Joja Financial Services | Contact</title><link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}"></head>
+<body>
+<header class="navbar"><a class="brand" href="{{ url_for('home') }}"><span class="brand-mark">J</span><span>Joja <b>Financial Services</b></span></a><nav><a href="{{ url_for('home') }}">Home</a><a href="{{ url_for('history') }}">History</a><a class="active" href="{{ url_for('contact') }}">Contact Us</a></nav></header>
+<main>
+<section class="page-hero"><span class="eyebrow">WE'RE HERE TO HELP</span><h1>Contact our team</h1><p>Tell us what you need and a Joja representative can get back to you.</p></section>
+<section class="contact-layout section">
+<div class="contact-info"><h2>Let's start a conversation.</h2><p>Have questions about a loan, eligibility, or your application? Send us a message using the form.</p><div class="contact-points"><div><span>✉</span><b>Email</b><small>support@jojafinancial.test</small></div><div><span>☎</span><b>Phone</b><small>+91 98765 43210</small></div><div><span>⌖</span><b>Office</b><small>Financial District, Hyderabad</small></div></div></div>
+<form id="contactForm" class="contact-form">
+<label>Full name<input name="name" required placeholder="Enter your name"></label><label>Email address<input name="email" type="email" required placeholder="you@example.com"></label><label>Phone number<input name="phone" placeholder="+91 98765 43210"></label><label>What can we help with?<textarea name="message" rows="5" required placeholder="Tell us about your requirement..."></textarea></label>
+<button class="btn primary full" type="submit">Submit request →</button><div id="formMessage" class="form-message"></div>
+</form>
+</section></main>
+<footer><span>© 2026 Joja Financial Services</span><span>Sample contact flow • No real submissions</span></footer>
+<script>
+document.getElementById("contactForm").addEventListener("submit", async (e) => {
+ e.preventDefault();
+ const box = document.getElementById("formMessage");
+ const form = e.currentTarget;
+ const response = await fetch("/api/contact", {method:"POST", headers:{"Content-Type":"application/json"}, body:JSON.stringify(Object.fromEntries(new FormData(form)))});
+ const data = await response.json();
+ box.textContent = data.message;
+ box.className = "form-message " + (data.ok ? "success" : "error");
+ if (data.ok) form.reset();
+});
+</script>
+</body>
+</html>
