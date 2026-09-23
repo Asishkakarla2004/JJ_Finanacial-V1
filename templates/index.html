@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>JJ Financial Services | Home</title>
+<link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+<header class="navbar">
+<a class="brand" href="{{ url_for('home') }}"><span class="brand-mark">J</span><span>JJ<b>Financial Services</b></span></a>
+<nav><a class="active" href="{{ url_for('home') }}">Home</a><a href="{{ url_for('history') }}">History</a><a href="{{ url_for('contact') }}">Contact Us</a></nav>
+</header>
+
+<main>
+<section class="hero">
+<div class="hero-copy">
+<span class="eyebrow">SMART FINANCE • SIMPLE FUTURES</span>
+<h1>Finance your goals.<br><span>Build your future.</span></h1>
+<p>Joja Financial Services helps individuals and businesses access transparent, flexible lending options through a simple digital experience.</p>
+<div class="hero-actions"><a class="btn primary" href="#loan-calculator">Calculate EMI →</a><a class="btn ghost" href="{{ url_for('contact') }}">Talk to us</a></div>
+<div class="trust-row"><div><strong>10K+</strong><small>Customers served</small></div><div><strong>₹250Cr+</strong><small>Loans facilitated</small></div><div><strong>98%</strong><small>Customer satisfaction</small></div></div>
+</div>
+<div class="hero-art"><div class="orb"></div><div class="floating-card card-one"><span>Loan approved</span><strong>₹12,00,000</strong><small>Vehicle Loan</small></div><div class="floating-card card-two"><span>Interest rate</span><strong>7.00% p.a.</strong><small>Home Loan</small></div><div class="building">⌂</div></div>
+</section>
+
+<section class="mission section">
+<div class="section-heading"><span class="eyebrow">WHO WE ARE</span><h2>Money should move <em>with your ambitions.</em></h2></div>
+<div class="mv-grid">
+<article><span class="mini-icon">◎</span><h3>Our Mission</h3><p>To make responsible financing easier to understand and access while putting transparency, simplicity and customer needs first.</p></article>
+<article><span class="mini-icon">✦</span><h3>Our Vision</h3><p>To become a trusted digital financial partner where every borrowing decision is simple, transparent and purpose-driven.</p></article>
+</div>
+</section>
+
+<section class="loans section">
+<div class="section-heading row-heading"><div><span class="eyebrow">BORROWING OPTIONS</span><h2>Loans built around your needs</h2></div><span class="muted">Sample rates • Testing data</span></div>
+<div class="loan-grid">
+{% for loan in loan_types %}
+<article class="loan-card" onclick="selectLoan('{{ loan.name }}', {{ loan.rate }})">
+<div class="loan-icon">{{ loan.icon }}</div><div><h3>{{ loan.name }}</h3><p>{{ loan.desc }}</p></div>
+<div class="rate">{{ "%.2f"|format(loan.rate) }}% <small>p.a.</small></div><button type="button">Calculate →</button>
+</article>
+{% endfor %}
+</div>
+</section>
+
+<section class="section carousel-section">
+<div class="section-heading row-heading"><div><span class="eyebrow">CUSTOMER SNAPSHOT</span><h2>Recent loan activity</h2></div><a href="{{ url_for('history') }}" class="text-link">View all history →</a></div>
+<div class="carousel-window"><div class="activity-track" id="activityTrack">
+{% for loan in loans %}
+<article class="activity-card"><div class="activity-top"><span class="loan-tag">{{ loan.loan_type }}</span><span class="date">{{ loan.date }}</span></div><div class="activity-amount">₹{{ "{:,.0f}".format(loan.amount) }}</div><div class="activity-bottom"><span>Amount sanctioned</span><span class="status {{ loan.status|lower }}">{{ loan.status }}</span></div></article>
+{% endfor %}
+</div></div><div class="dots" id="carouselDots"></div>
+</section>
+
+<section class="calculator section" id="loan-calculator">
+<div class="calc-intro"><span class="eyebrow">EMI CALCULATOR</span><h2>Know your numbers<br>before you borrow.</h2><p>Select a loan, enter the amount and tenure. The calculator uses the standard reducing-balance EMI formula.</p><div class="formula-box"><span>Monthly EMI</span><strong>P × r × (1+r)ⁿ</strong><small>──────────────<br>(1+r)ⁿ − 1</small></div></div>
+<div class="calculator-box">
+<div class="field-row">
+<label>Loan type<select id="loanType" onchange="syncRate()">{% for loan in loan_types %}<option value="{{ loan.name }}" data-rate="{{ loan.rate }}">{{ loan.name }}</option>{% endfor %}</select></label>
+<label>Interest rate (% p.a.)<input id="rate" type="number" value="7" step="0.01" min="0"></label>
+</div>
+<label>Loan amount <output id="amountValue">₹25,00,000</output><input id="amount" type="range" min="50000" max="10000000" step="50000" value="2500000"></label>
+<label>Tenure <output id="tenureValue">15 Years</output><input id="tenure" type="range" min="1" max="30" step="1" value="15"></label>
+<button class="btn primary full" onclick="calculateEMI()">Calculate EMI</button>
+<div class="result-panel"><span>Estimated monthly EMI</span><strong id="emi">₹22,472</strong><div class="result-grid"><div><small>Principal</small><b id="principal">₹25,00,000</b></div><div><small>Total interest</small><b id="interest">₹15,44,960</b></div><div><small>Total payable</small><b id="total">₹40,44,960</b></div></div></div>
+<p class="disclaimer">*Illustrative calculation using sample rates. Actual terms, eligibility and rates may vary.</p>
+</div>
+</section>
+
+<section class="cta section"><div><span class="eyebrow">READY WHEN YOU ARE</span><h2>Let's turn your next plan into a reality.</h2></div><a class="btn light" href="{{ url_for('contact') }}">Request a callback →</a></section>
+</main>
+<footer><span>© 2026 Joja Financial Services</span><span>Built for testing • Sample data only</span></footer>
+<script src="{{ url_for('static', filename='js/app.js') }}"></script>
+</body>
+</html>
