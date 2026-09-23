@@ -1,4 +1,4 @@
-# Joja Financial Services
+# JJ Financial Services
 
 A testing/demo loan web application.
 
